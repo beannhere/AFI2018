@@ -65,10 +65,18 @@ var ui = new firebaseui.auth.AuthUI(firebase.auth());
  * Displays the UI for a signed in user.
  * @param {!firebase.User} user
  */
-// var handleSignedInUser = function(user) {
-//   alert("USER SIGNED-IN");
-//   window.location = "user.html";
-// };
+var handleSignedInUser = function(user) {
+  // Check if user is present
+  if (user) {
+    alert("USER SIGNED-IN");
+    if (user.email === 'aficionados2018@gmail.com')
+    {
+      //window.location = "admin/admin.html";
+    } else {
+      //window.location = "user/user.html";
+    }
+  }
+};
 
 
 /**
