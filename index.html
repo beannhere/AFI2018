@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="user/css/mystyle.css" rel="stylesheet" type="text/css" />
+    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/2.3.0/firebaseui.css" />
+    <link href="user/css/style.css" rel="stylesheet" type="text/css" media="screen" />
+
+    <title>Welcome to Firebase Hosting</title>
+
+    <script src="https://www.gstatic.com/firebasejs/5.1.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.1.0/firebase.js"></script>
+    <script src="https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.js"></script>
+    <!-- <script src="js/index.js"></script> -->
+    <!-- <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-database.js"></script> -->
+    <!-- <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-firestore.js"></script> -->
+<script>
+  // Initialize Firebase
+  var valid = true;
+
+  var config = {
+    apiKey: "AIzaSyBWeZrRCOFxYcy0V-SyRMQiTAOf9M5Pt1o",
+    authDomain: "kt-project-132c7.firebaseapp.com",
+    databaseURL: "https://kt-project-132c7.firebaseio.com",
+    projectId: "kt-project-132c7",
+    storageBucket: "kt-project-132c7.appspot.com",
+    messagingSenderId: "989400514540"
+  };
+  firebase.initializeApp(config);
+
+</script>
+<script src="index.js"></script>
+
+  </head>
+  <body >
+    <!--PROVIDERS SIGN-IN-->
+    <div class="container" style="text-align: center;">
+      <h1>WELCOME TO PINOY HOOPS</h1>
+      <h3>In Philippines, Ball is LIFE!</h1>
+    </div>
+
+    <!-- For FirebaseUI -->
+    <div id="container">
+      <div id="loaded" >
+        <div id="main">
+          <div id="user-signed-out">
+            <div id="firebaseui-spa">
+              <div id="firebaseui-container"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </body>
+</html>
