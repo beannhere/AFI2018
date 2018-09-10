@@ -13,70 +13,13 @@ if (user) {
     console.log("Name: " + dispName);
     console.log("Email: " + user.email);
 
-
-    // Pub sub
-    firebase.database().ref("fbSignInCtr/" + user.uid).once('value').then(function(snapshot) {
-      console.log("pubsub val: " + snapshot.val());
-      console.log("pubsub val: " + snapshot.val().pubsub);
-
-      var bool = snapshot.val().pubsub;
-      console.log(bool === true);
-      if (bool === true){
-
-        // firebase.database().ref("pubSub/topictest").on('value').then(function(snapshot) {
-        //   console.log("pubsub val: " + snapshot.val().name);
-        //
-        //   document.getElementById('pubsub').innerHTML = "Trending name: " + snapshot.val().name + ", since " + snapshot.val().published;
-        //
-        // }).catch(function(error) {
-        //   // Handle error
-        //   console.log("DB pubsub ERROR!!");
-        // });
-
-        var pubSubListener = firebase.database().ref("pubSub/topictest");
-        pubSubListener.on('value', function(snapshot) {
-          //updateStarCount(postElement, snapshot.val());
-          document.getElementById('pubsub').innerHTML = "Trending name: " + snapshot.val().name + "<br>since " + snapshot.val().published
-            +"<br>Message: " + snapshot.val().message;
-        });
-
-      }
-      // ...
-    }).catch(function(error) {
-      // Handle error
-      console.log("DB pubsub ERROR!!");
-    });
-
-    console.log("Call disname");
-    // Check if user display name is empty
-    if (dispName !== null){
-      console.log("Not null yung name");
-      document.getElementById("welcome").innerHTML = "WELCOME " + dispName + "!!" ;
-    }
-
-    // Photo URL
-    if (photoURL !== null){
-      document.getElementById('userPhoto').src = photoURL;
-      document.getElementById('photo').style.display = 'block';
-    }
-
-    alert(user.isAnonymous);
-    console.log("user isAnonymous: " + user.isAnonymous);
-    // if (user.isAnonymous){
-    //   document.getElementById('anonymous').style.display = 'block';
-    // }
-    if (user){
-      document.getElementById('anonymous').style.display = 'block';
-    }
-    console.log("User UID " + user.uid);
-
   }).catch(function(error) {
     // Handle error
     console.log("No user ID TOKEN!!");
     });
   } else {
     // No user is signed in.
-    window.location = "/index.html";
+    //window.location = "/index.html";
     console.log("No user is signed in.");
   }
 });
@@ -90,13 +33,17 @@ function tableList() {
   table.innerHTML = "";
   console.log("LENGTH " + Object.keys(testDataList).length);
   for ( var key in testDataList) {
-    crunchifyValue = testDataList[key];
+    listValue = testDataList[key];
     var row = table.insertRow(-1);
-    for ( var key2 in crunchifyValue) {
-        newValue = crunchifyValue[key2];
-        var cell1 = row.insertCell(-1);
-        cell1.innerHTML = newValue;
+    for ( var key2 in listValue) {
+        newValue = listValue[key2];
+        var cell = row.insertCell(-1);
+        cell.innerHTML = newValue;
       }
+    var cell = row.insertCell(-1);
+    cell.innerHTML =
+      "<button id='popup-clickie' type='button' class='btn btn-primary' onClick='submitForm('submit')' style='text-align: center;'>UPLOAD SLIP</button>\n"
+    + "<button onClick='submitForm('cancel')' type='button' class='btn btn-danger'>DEL</button>";
   }
   var header = table.createTHead();
   var row = header.insertRow(0);
