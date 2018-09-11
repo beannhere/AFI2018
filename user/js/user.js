@@ -1,25 +1,16 @@
 // ON CHANGE LISTENER
 firebase.auth().onAuthStateChanged(function(user) {
-if (user) {
-  user.getIdToken(false).then(function(user) {
-    console.log("ID token: " + user);
-
+  if (user) {
     // Get user values
-    var currUser = firebase.auth().currentUser;
-    var dispName = currUser.displayName;
-    var photoURL = currUser.photoURL;
+    var dispName = user.displayName;
+    var photoURL = user.photoURL;
 
     console.log("Photo URL: " + photoURL);
-    console.log(currUser);  
+    console.log(user);  
     console.log("Name: " + dispName);
-    console.log("Email: " + currUser.email);
-
-  }).catch(function(error) {
-    // Handle error
-    console.log("No user ID TOKEN!!");
-    });
-  } else {firebase.auth().currentUser    
-    consolfirebase.auth().currentUser
+    console.log("Email: " + user.email);
+  }else {
+    window.location = "/index.html";
   }
 });
 
@@ -187,32 +178,32 @@ var time = document.getElementById('time').value;
 //     if (doc.exists) {  
         // console.log('No such document!');
         // console.log("awda");
-        console.log(firebase.auth().currentUser.displayName);
-        var userdata = {       
-          fullname: firebase.auth().currentUser.displayName,  
-          contact: inputcontact
-        };
+        // console.log(firebase.auth().currentUser.displayName);
+        // var userdata = {       
+        //   fullname: firebase.auth().currentUser.displayName,  
+        //   contact: inputcontact
+        // };
         
-        var dateId = date.replace(/-/g , "");
-        var selectedCourt = document.getElementById("court");
-        var courtname = selectedCourt.options[selectedCourt.selectedIndex].text;
-        var selectedTime = document.getElementById("time");
-        var inputTime = selectedTime.options[selectedTime.selectedIndex].text;
+        // var dateId = date.replace(/-/g , "");
+        // var selectedCourt = document.getElementById("court");
+        // var courtname = selectedCourt.options[selectedCourt.selectedIndex].text;
+        // var selectedTime = document.getElementById("time");
+        // var inputTime = selectedTime.options[selectedTime.selectedIndex].text;
 
-        firebase.firestore().collection("user").doc(userName).set(userdata).then(result => {
-          console.log('setting data for request list ');
-          var updateData = {
-            approvalFlg: false,
-            confirmationFlg: false,
-            courtID: courtname,
-            date: date,
-            paymentFlg: false,
-            paymentURL: "",
-            time: inputTime,
-            stat: "pending"
-          };
-          firebase.firestore().collection("user").doc(userName).collection("requestList").doc(dateId).set(updateData);
-        });
+        // firebase.firestore().collection("user").doc(userName).set(userdata).then(result => {
+        //   console.log('setting data for request list ');
+        //   var updateData = {
+        //     approvalFlg: false,
+        //     confirmationFlg: false,
+        //     courtID: courtname,
+        //     date: date,
+        //     paymentFlg: false,
+        //     paymentURL: "",
+        //     time: inputTime,
+        //     stat: "pending"
+        //   };
+        //   firebase.firestore().collection("user").doc(userName).collection("requestList").doc(dateId).set(updateData);
+        // });
 
 //     } else {
 //         console.log('Document data:', doc.data());
@@ -226,6 +217,45 @@ var time = document.getElementById('time').value;
 //*********************************************** */
 
 if (request === 'submit'){
+  console.log(firebase.auth().currentUser.displayName);
+  var userdata = {       
+    fullname: firebase.auth().currentUser.displayName,  
+    contact: inputcontact
+  };
+  
+  var dateId = date.replace(/-/g , "");
+  var selectedCourt = document.getElementById("court");
+  var courtname = selectedCourt.options[selectedCourt.selectedIndex].text;
+  var selectedTime = document.getElementById("time");
+  var inputTime = selectedTime.options[selectedTime.selectedIndex].text;
+
+  firebase.firestore().collection("user").doc(userName).set(userdata).then(result => {
+    console.log('setting data for request list ');
+    var updateData = {
+      approvalFlg: false,
+      confirmationFlg: false,
+      courtID: courtname,
+      date: date,
+      paymentFlg: false,
+      paymentURL: "",
+      time: inputTime,
+      stat: "pending"
+    };
+    firebase.firestore().collection("user").doc(userName).collection("requestList").doc(dateId).set(updateData)
+    .then(function(){
+      $('#success-alert').show();
+      setTimeout(function () {      
+        $('#success-alert').fadeOut();
+    }, 2000);
+
+    }).catch(function(error) {
+      console.error("Error removing document: ", error);
+      $('#success-failed').show();
+      setTimeout(function () {      
+        $('#success-failed').fadeOut();
+      }, 2000);
+    });
+  });
 
   // Show pre form
   document.getElementById('popup-form').style.display = 'block';
@@ -238,11 +268,11 @@ if (request === 'submit'){
   document.getElementById('contact').value = '';
   //alert(document.getElementById('contact'));
 
-  // Show and hide alert
-  $('#success-alert').show();
-    setTimeout(function () {      
-      $('#success-alert').fadeOut();
-  }, 2000);
+  // // Show and hide alert
+  // $('#success-alert').show();
+  //   setTimeout(function () {      
+  //     $('#success-alert').fadeOut();
+  // }, 2000);
   } else {
 
     // Show pre form

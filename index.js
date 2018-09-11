@@ -21,9 +21,9 @@ firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
     if (user.email === 'aficionados2018@gmail.com')
     {
-      //window.location = "admin/admin.html";
+      window.location = "admin/admin.html";
     } else {
-      //window.location = "user/user.html";
+      window.location = "user/user.html";
     }
   }
 });
@@ -71,9 +71,9 @@ var handleSignedInUser = function(user) {
     alert("USER SIGNED-IN");
     if (user.email === 'aficionados2018@gmail.com')
     {
-      //window.location = "admin/admin.html";
+      window.location = "admin/admin.html";
     } else {
-      //window.location = "user/user.html";
+      window.location = "user/user.html";
     }
   }
 };
