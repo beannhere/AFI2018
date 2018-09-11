@@ -5,7 +5,7 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const nodemailer = require('nodemailer');
 
-const gcs = require('@google-cloud/storage')({keyFilename: "./pinashoops2018-firebase-adminsdk-6fm75-af6da71d3f.json"});
+//const gcs = require('@google-cloud/storage')({keyFilename: "./pinashoops2018-firebase-adminsdk-6fm75-af6da71d3f.json"});
 // Other method
 const spawn = require('child-process-promise').spawn;
 const path = require('path');
@@ -38,6 +38,7 @@ const APP_NAME = 'PINOY_HOOPS';
 var email = '';
 var content = '';
 // Variable from CLI
+//firebase functions:config:set gmail.email=aficionados2018@gmail.com gmail.password=afiadmin2018
 const gmailEmail = functions.config().gmail.email;
 const gmailPassword = functions.config().gmail.password;
 // Setup email account
@@ -64,8 +65,10 @@ exports.generateThumbnail = functions.storage.object().onFinalize((object) => {
  const metageneration = object.metageneration; // Number of times metadata has been generated. New objects have a value of 1.
 
  var uid=object.name.split("_")[0];
+ var date=object.name.split("_")[1].split(".")[0];
 
  console.log('uid value ' + uid);
+ console.log('date value ' + date);
 
 //  // Get the file name.
 // const fileName = path.basename(filePath);
@@ -98,57 +101,39 @@ exports.generateThumbnail = functions.storage.object().onFinalize((object) => {
 
 console.log('IMAGE URL :',img_url);
 
-  // bucket.file(filePath).download({
-  //   destination: tempFilePath,
-  // }).then(() => {
-  //   console.log("Successfully");
-  // });
-
   //You may return a promise
   return admin.auth().getUser(uid)
     .then(function(userRecord) {
       // See the UserRecord reference doc for the contents of userRecord.
-      sendEmailToAdmin(userRecord, img_url);
+      return detectTextGCS(fileBucket, filePath).then((bool)=> {
+        console.log('BOOL VALUE: ' + bool);
+        sendEmailToAdmin(userRecord, img_url, bool);
+        return admin.firestore().collection('user')
+         .doc('babyannatuli')
+         .collection('requestList')
+         .doc(date)
+          .update({
+            paymentFlg: bool,
+            paymentURL: img_url
+          }).then(()=> {
+            console.log("User updates successfully");
+          }).catch(function(error) {
+            console.log("Error updating user data:", error);
+          });
+      });
     })
     .catch(function(error) {
       console.log("Error fetching user data:", error);
     });
 });
 
-// // An onCreate trigger function that sends an email to leads, ops and pcs
-// exports.sendEmail = functions.database.ref('/SLEL/{type}/{team}/content').onWrite((snapshot, context) => {
-//
-//   // Get value from snapshot
-//   //const content = snapshot.val();
-//   content = snapshot.after.val();
-//
-//   // Setup variables
-//   var type = context.params.type;
-//   var team = context.params.team;
-//   var name = content.name;
-//   if (content.ref_num !== undefined){
-//     var ref_num = content.ref_num;
-//   }
-//   var reason = content.reason;
-//   var date_from = content.date_from;
-//   var date_to = content.date_to;
-//
-//   console.log('type: ' + type);
-//   console.log('team: ' + team);
-//   console.log('name: ' + name);
-//   console.log('ref_num: ' + ref_num);
-//   console.log('reason: ' + reason);
-//   console.log('date_from: ' + date_from);  // Get values from RTDB
+// Sends an e-mail to admin
+function sendEmailToAdmin(userRecord, img_url, bool){
 
-//   console.log('date_to: ' + date_to);
-//
-// 	// Call function that sends the email
-//   return sendWelcomeEmail(content);
-// });
-//
-// Sends an e-mail to leads, ops and pcs
-function sendEmailToAdmin(userRecord, img_url){
-
+  var not = ' NOT';
+  if (bool){
+    not = '';
+  }
   // Construct email
   const mailOptions = {
     from: `${APP_NAME} <noreply@firebase.com>`,
@@ -158,7 +143,8 @@ function sendEmailToAdmin(userRecord, img_url){
   mailOptions.subject = `[${APP_NAME}] Request submitted`;
   mailOptions.text =
     `Hi there,\n\n`
-  + `Please be informed that ${userRecord.displayName} has deposited the payment. You may verify the image link below.\n\n`
+  + `Please be informed that ${userRecord.displayName} has deposited the payment and cloud vision has detected that the slip is${not} valid.\n\n`
+  + `You may verify the image link below:\n`
   + `${img_url}.\n\n`
   + `Should you have any questions, do reach out to ${userRecord.displayName} @ ${userRecord.email}.\n\n`
   + `Sincerely,\n`
@@ -201,7 +187,7 @@ function sendEmailToAdmin(userRecord, img_url){
   });
 }
 
-// Sends an e-mail to leads, ops and pcs
+// Sends an e-mail to user
 function sendEmailToUser(userRecord){
 
   // Construct email
@@ -221,4 +207,57 @@ function sendEmailToUser(userRecord){
   return mailTransport.sendMail(mailOptions).then(() => {
     console.log('Email sent')
   });
+}
+
+// CLOUD VISION
+function detectTextGCS(bucketName, fileName) {
+  // [START vision_text_detection_gcs]
+  // Imports the Google Cloud client libraries
+  const vision = require('@google-cloud/vision');
+
+  // Creates a client
+  const client = new vision.ImageAnnotatorClient();
+
+  var deposit = "deposit";
+  var accountNum = "001820479151";
+  var depBool = false;
+  var acctNumBool = false;
+
+  /**
+   * TODO(developer): Uncomment the following lines before running the sample.
+   */
+  // const bucketName = 'Bucket where the file resides, e.g. my-bucket';
+  // const fileName = 'Path to file within bucket, e.g. path/to/image.png';
+
+  // Performs text detection on the gcs file
+  return client
+    .textDetection(`gs://${bucketName}/${fileName}`)
+    .then(results => {
+      const detections = results[0].textAnnotations;
+      console.log('Text:');
+      detections.forEach(text => {
+        //console.log(text);
+        console.log('DESCRIPTION :' + text.description);
+        if (text.description.toString().trim().toLowerCase() === deposit){
+          depBool = true;
+        }
+
+        if (text.description.toString().trim() === accountNum){
+          acctNumBool = true;
+        }
+
+      });
+
+      if (depBool & acctNumBool){
+        console.log("TRUE");
+        return true;
+      }else{
+        return false;
+        console.log("FALSE");
+      }
+    })
+    .catch(err => {
+      console.error('ERROR:', err);
+    });
+  // [END vision_text_detection_gcs]
 }
