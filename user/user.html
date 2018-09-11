@@ -30,9 +30,12 @@ var config = {
 };
 firebase.initializeApp(config);
 
-window.onload = function() {
-  view('home');
-};
+// Initialize Cloud Firestore through Firebase
+var dbFirestore = firebase.firestore();
+
+// window.onload = function() {
+//   view('home');
+// };
 
 // TEST DATA
 var testDataList =
@@ -128,11 +131,11 @@ var testDataList =
                     <!-- <div class="form-group"> -->
                       <select id='court' class="form-control" style="text-align: center;text-align-last: center;">
                         <option value="" disabled selected>Select your court</option>
-                        <option value="CRT1">Makati court</option>
+                        <!-- <option value="CRT1">Makati court</option>
                         <option value="CRT2">Mandaluyong court</option>
                         <option value="CRT3">Manila court</option>
                         <option value="CRT4">Ortigas court</option>
-                        <option value="CRT5">Taguig court</option>
+                        <option value="CRT5">Taguig court</option> -->
                       </select>
                     <!-- </div> -->
                   </div>
@@ -150,11 +153,6 @@ var testDataList =
                     <!-- <div class="form-group"> -->
                       <select id='time' class="form-control" style="text-align: center;text-align-last: center;">
                         <option value="" disabled selected>Select your time</option>
-                        <option value="AM1">9:00AM - 10:00AM</option>
-                        <option value="AM2">10:00AM - 11:00AM</option>
-                        <option value="PM1">5:00PM - 6:00PM</option>
-                        <option value="PM2">6:00PM - 7:00PM</option>
-                        <option value="PM3">7:00PM - 8:00PM</option>
                       </select>
                     </div>
                   <!-- </div> -->
@@ -218,6 +216,13 @@ var testDataList =
                 </tr>
               </tbody>
             </table>
+
+            <!-- Download from Firebase Storage -->
+            <!-- <div id="downloadDiv">
+              <p>Filename: <input type="text" id="downloadFile"></p>
+              <button onclick="getStorageFile()">Download File</button>
+              <span id="linkbox"></span>
+            </div> -->
         </div>
 
     <!-- end of wrapper -->
