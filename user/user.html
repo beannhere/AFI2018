@@ -124,9 +124,8 @@ var testDataList =
           <div id="popupContact">
             <div id="popup-form" style="display:block;">
               <div class="container">
-                <div class="row justify-content-md-center">
-                  <!-- <div class="col-md-3 col-centered text-center">
-                  </div> -->
+                <div class="row justify-content-md-center">                  
+                  <!-- select court -->
                   <div class="col-md-2 col-centered text-center">
                     <!-- <div class="form-group"> -->
                       <select id='court' class="form-control" style="text-align: center;text-align-last: center;">
@@ -139,6 +138,7 @@ var testDataList =
                       </select>
                     <!-- </div> -->
                   </div>
+                  <!-- select date -->
                   <div class="col-md-2">
                     <!-- <div class="form-group"> -->
                         <div class='input-group date' id='datetimepicker1'>
@@ -149,12 +149,17 @@ var testDataList =
                         </div>
                     <!-- </div> -->
                   </div>
+                  <!-- select time -->
                   <div class="col-md-2 col-centered text-center">
                     <!-- <div class="form-group"> -->
                       <select id='time' class="form-control" style="text-align: center;text-align-last: center;">
                         <option value="" disabled selected>Select your time</option>
                       </select>
                     </div>
+                    <!-- contact number  -->
+                  <div class="col-md-2 col-centered text-center">                        
+                      <input type="text" placeholder="Contact Number" id='contact' class="form-control"><br><br>
+                </div>
                   <!-- </div> -->
                   <!-- <div class="col-md-3 col-centered text-center">
                   </div> -->

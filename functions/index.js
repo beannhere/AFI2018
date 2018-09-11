@@ -105,15 +105,18 @@ console.log('IMAGE URL :',img_url);
   return admin.auth().getUser(uid)
     .then(function(userRecord) {
       // See the UserRecord reference doc for the contents of userRecord.
+      var user=userRecord.email.split("@")[0];
+      console.log('USER VALUE: ' + user);
       return detectTextGCS(fileBucket, filePath).then((bool)=> {
         console.log('BOOL VALUE: ' + bool);
         sendEmailToAdmin(userRecord, img_url, bool);
         return admin.firestore().collection('user')
-         .doc('babyannatuli')
+         .doc(user)
          .collection('requestList')
          .doc(date)
           .update({
-            paymentFlg: bool,
+            confirmationFlg: bool,
+            paymentFlg: true,
             paymentURL: img_url
           }).then(()=> {
             console.log("User updates successfully");
