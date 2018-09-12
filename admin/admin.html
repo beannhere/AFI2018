@@ -1,0 +1,74 @@
+<html>
+<head>
+    <title>Admin</title>
+</head>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/table.css">
+    <link rel="stylesheet" type="text/css" href="css/util.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css">
+    <!-- Firebase App is always required and must be first -->          
+    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase-app.js"></script>    
+    <script src="https://requirejs.org/docs/release/2.3.5/minified/require.js"></script>    
+
+    <!-- Add additional services that you want to use -->    
+    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase-messaging.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase-functions.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.4.1/firebase-storage.js"></script>
+    <script src="js/main.js"></script>
+
+    <body>   
+        <div id="loader" class="loader"></div>
+        <div id = "wrapper">
+            <!-- Sidebar -->
+            <div id="sidebar-wrapper">
+                <ul class="sidebar-nav">
+                        <li class="sidebar-brand"><h1>Administrator</h2></li>
+                        <li><a href="#reqRes" onclick="view('reqRes')">Request List</a></li>
+                        <!-- <li><a href="#reqList" onclick="view('reqList')">Approved Request List</a></li> -->
+                        <li class="adm_out"><a href="#reqList" onclick="signOut()">Sign-out</a></li>
+                </ul>
+            </div>
+            <div>
+                    <nav class="navbar navbar-default">
+                      <div class="container">
+                        <div class="navbar-header"></div>                    
+                      </div>
+                    </nav>
+            </div>
+            <div id='reqList' class="container">
+             <section>               
+               <h1 class="tblHeader">Request List</h1>
+               <div class="tbl-header">
+                 <table cellpadding="0" cellspacing="0" border="0">
+                   <thead>
+                     <tr>
+                       <th class="text_center">Reserved Date</th>
+                       <th class="text_center">Court</th>
+                       <th class="text_center">Payment Status</th>
+                       <th class="text_center">Action</th>
+                     </tr>
+                   </thead>
+                 </table>
+               </div>
+               <div class="tbl-content">                
+                 <table cellpadding="0" cellspacing="0" border="0">
+                   <tbody id="tbody">
+                    
+                   </tbody>
+                 </table>
+               </div>
+            <table>            
+
+               </div>
+             </section>
+        </div>            
+    </body>
+
+</html>

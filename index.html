@@ -6,42 +6,52 @@
     <link href="user/css/mystyle.css" rel="stylesheet" type="text/css" />
     <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/2.3.0/firebaseui.css" />
     <link href="user/css/style.css" rel="stylesheet" type="text/css" media="screen" />
-
-    <title>Welcome to Firebase Hosting</title>
+    <link rel="stylesheet" type="text/css" href="admin/css/login.css">
+    <title>PinasHoops</title>
 
     <script src="https://www.gstatic.com/firebasejs/5.1.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.1.0/firebase.js"></script>
-    <script src="https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.js"></script>
-    <!-- <script src="js/index.js"></script> -->
-    <!-- <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-database.js"></script> -->
-    <!-- <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-firestore.js"></script> -->
-<script>
-  // Initialize Firebase
+    <script src="https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.js"></script>    
+    <script src="admin/js/prefixfree.min.js"></script>
+<script>  
   var valid = true;
-
   // Initialize Firebase
-  var config = {
-    apiKey: "AIzaSyAO9htfKtSf-7JFVCSCt0RN2epYWOCTQBI",
-    authDomain: "pinashoops2018.firebaseapp.com",
-    databaseURL: "https://pinashoops2018.firebaseio.com",
-    projectId: "pinashoops2018",
-    storageBucket: "pinashoops2018.appspot.com",
-    messagingSenderId: "72752680197"
-  };
-  firebase.initializeApp(config);
-
+    var config = {
+      apiKey: "AIzaSyCndVxiG7KVEKpJYfRN9kTo7cSqcvpGbfY",
+      authDomain: "pinashoops-c535c.firebaseapp.com",
+      databaseURL: "https://pinashoops-c535c.firebaseio.com",
+      projectId: "pinashoops-c535c",
+      storageBucket: "pinashoops-c535c.appspot.com",
+      messagingSenderId: "762709182450"
+    };
+    firebase.initializeApp(config);
 </script>
-<script src="index.js"></script>
-
+  <script src="index.js"></script>
   </head>
-  <body >
-    <!--PROVIDERS SIGN-IN-->
+
+  <body>
+    <div class="body"></div>
+      <div class="grad"></div>
+      
+      <div class="header">                    
+          <div id="main">
+            <div id="user-signed-out">
+              <div id="firebaseui-spa">
+                <div class="admin_header">Welcome to PinasHoops <br/><span class="sub_header">Online Reservation</span>
+                <div id="firebaseui-container"></div>
+                </div>
+                <br/>
+              </div>
+            </div>
+          </div>
+      </div>
+  </body>
+
+  <!-- <body >    
     <div class="container" style="text-align: center;">
       <h1>WELCOME TO PINOY HOOPS</h1>
       <h3>In Philippines, Ball is LIFE!</h1>
-    </div>
-
-    <!-- For FirebaseUI -->
+    </div>  
     <div id="container">
       <div id="loaded" >
         <div id="main">
@@ -54,5 +64,5 @@
       </div>
     </div>
 
-  </body>
+  </body> -->
 </html>

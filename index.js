@@ -68,7 +68,7 @@ var ui = new firebaseui.auth.AuthUI(firebase.auth());
 var handleSignedInUser = function(user) {
   // Check if user is present
   if (user) {
-    alert("USER SIGNED-IN");
+    //alert("USER SIGNED-IN");
     if (user.email === 'aficionados2018@gmail.com')
     {
       window.location = "admin/admin.html";

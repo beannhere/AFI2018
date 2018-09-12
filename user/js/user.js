@@ -1,6 +1,9 @@
 // ON CHANGE LISTENER
+var loader;
+
 firebase.auth().onAuthStateChanged(function(user) {
-  if (user) {
+  if (user) {    
+          
     // Get user values
     var dispName = user.displayName;
     var photoURL = user.photoURL;
@@ -19,6 +22,9 @@ firebase.auth().onAuthStateChanged(function(user) {
 //==================================================================================================================
 //==================================================================================================================
 function tableList() {
+  loader = document.getElementById("loader"); 
+  loader.style.display = "block";
+  
   var table = document.getElementById("reqTable");
   table.innerHTML = "";
   var date = "";
@@ -51,10 +57,10 @@ function tableList() {
       var cell = row.insertCell(-1);
       cell.innerHTML = doc.data().stat;
 
-      if(!doc.data().paymentFlg){
+      if(doc.data().stat != "for approval"){
         var cell = row.insertCell(-1);
         cell.innerHTML =
-        "<form>"
+        "<form >"
       + " <div class='form-group'>"
       + "  <button id='btnGroup_" + doc.id +"' onClick='deleteRequest("+doc.id+")' type='button' class='btn btn-danger'>DELETE</button><br>"
       + "  <input type='file' class='form-control-file' id='fileBtn_" + doc.id +"'>"
@@ -72,6 +78,9 @@ function tableList() {
         var cell = row.insertCell(-1);
       }
     });
+    setTimeout(function() {
+          loader.style.display = "none";
+    }, 180);  
   });
 
   // console.log("LENGTH " + Object.keys(testDataList).length);
@@ -137,20 +146,21 @@ $(function () {
 
 function view(num){
   if (num === 'home'){
-    document.getElementById(num).style.display = "block";
+    //document.getElementById(num).style.display = "block";
     document.getElementById('reqRes').style.display = "none";
     document.getElementById('reqList').style.display = "none";
   } else if (num === 'reqRes') {
-    document.getElementById(num).style.display = "block";
-    document.getElementById('home').style.display = "none";
+    document.getElementById(num).style.display = "block"; 
+    document.getElementById('regist01').style.display = "block";     
+    //document.getElementById('home').style.display = "none";
     document.getElementById('reqList').style.display = "none";
     // RESET
     document.getElementById('court').value == "";
     document.getElementById('date').value == "";
     document.getElementById('time').value == "";
-  } else {
+  } else {    
     document.getElementById(num).style.display = "block";
-    document.getElementById('home').style.display = "none";
+    //document.getElementById('home').style.display = "none";
     document.getElementById('reqRes').style.display = "none";
     tableList();
   }
@@ -259,6 +269,7 @@ if (request === 'submit'){
 
   // Show pre form
   document.getElementById('popup-form').style.display = 'block';
+  document.getElementById('regist01').style.display = 'block';
 
   // Hide post form
   document.getElementById('post-form').style.display = "none";
@@ -277,8 +288,10 @@ if (request === 'submit'){
 
     // Show pre form
     document.getElementById('popup-form').style.display = 'block';
+    document.getElementById('regist01').style.display = "block";
+
     // Hide post form
-    document.getElementById('post-form').style.display = "none";
+    document.getElementById('post-form').style.display = "none";    
 
     document.getElementById('court').value = '';
     document.getElementById('date').value = '';
@@ -310,9 +323,11 @@ function deleteRequest(dateId){
 //function to hide Popup
 function subReqForm(){      
 if(isEmpty()){
-  alert ("Please fill out all fields")
-}
+  alert ("Please fill out all fields");
+  view('reqRes');
+} else {
   isDateReserved();
+}
 }
 
 function isEmpty(){
@@ -348,7 +363,7 @@ function isDateReserved(){
         firebase.firestore().collection("user").doc(eid).collection("requestList").doc(inputId).get().then(data => {              
           if (data.exists) {
             alert('Please select other date.');
-          } else {
+          } else {              
                // Get form values
               var court = document.getElementById('court').value;
               var date = document.getElementById('date').value;
@@ -357,6 +372,7 @@ function isDateReserved(){
 
               // Hide reservation form
               document.getElementById('popup-form').style.display = "none";
+              document.getElementById('regist01').style.display = "none";
 
               // Show post form
               document.getElementById('post-form').style.display = "block";
@@ -373,6 +389,7 @@ function isDateReserved(){
 
         // Hide reservation form
         document.getElementById('popup-form').style.display = "none";
+        document.getElementById('regist01').style.display = "none";        
 
         // Show post form
         document.getElementById('post-form').style.display = "block";
@@ -531,7 +548,7 @@ function callWindowLoad(fileBtnId, date){
             stat: "for approval"
           }).then(function(){
             //location.reload();
-            view('reqList');
+            view('reqList');            
           });
 
 
